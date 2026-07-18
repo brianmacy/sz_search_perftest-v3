@@ -3,7 +3,6 @@
 import concurrent.futures
 
 import argparse
-import pathlib
 import orjson
 import itertools
 
@@ -12,7 +11,7 @@ import os
 import time
 from timeit import default_timer as timer
 
-from senzing import G2Engine, G2Exception, G2EngineFlags, G2Diagnostic
+from senzing import G2Engine, G2EngineFlags, G2Diagnostic
 
 INTERVAL = 1000
 
@@ -74,7 +73,7 @@ try:
     print(response.decode())
 
     beginTime = prevTime = time.time()
-    timeMin = timeMax = timeTot = count = 0;
+    timeMin = timeMax = timeTot = count = 0
     timesAll = []
 
     with open(args.fileToProcess, "r") as fp:

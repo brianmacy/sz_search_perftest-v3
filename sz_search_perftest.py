@@ -1,17 +1,15 @@
 #! /usr/bin/env python3
 
-import concurrent.futures
-
 import argparse
-import orjson
+import concurrent.futures
 import itertools
-
-import sys
 import os
+import sys
 import time
 from timeit import default_timer as timer
 
-from senzing import G2Engine, G2EngineFlags, G2Diagnostic
+import orjson
+from senzing import G2Diagnostic, G2Engine, G2EngineFlags
 
 INTERVAL = 1000
 
@@ -56,13 +54,13 @@ try:
             "Please see https://senzing.zendesk.com/hc/en-us/articles/360038774134-G2Module-Configuration-and-the-Senzing-API",
             file=sys.stderr,
         )
-        exit(-1)
+        sys.exit(-1)
 
     # Initialize the G2Engine
     g2 = G2Engine()
     g2.init("sz_search_perftest", engine_config, args.debugTrace)
     g2.primeEngine()
-    max_workers = int(os.getenv("SENZING_THREADS_PER_PROCESS", 0))
+    max_workers = int(os.getenv("SENZING_THREADS_PER_PROCESS", "0"))
     if not max_workers:  # reset to null for executors
         max_workers = None
 
@@ -157,9 +155,9 @@ try:
             except Exception as err:
                 print(f"Shutting down due to error: {err}", file=sys.stderr)
                 executor.shutdown()
-                exit(-1)
+                sys.exit(-1)
 
 except Exception as err:
     print(err, file=sys.stderr)
-    exit(-1)
+    sys.exit(-1)
 
